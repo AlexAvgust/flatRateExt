@@ -1,4 +1,4 @@
-# react-tailwind-playground-starter
+# react-ts-tailwind-starter
 
 ## ✨ Tech specs
 
