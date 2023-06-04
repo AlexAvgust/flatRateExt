@@ -1,5 +1,7 @@
 # react-ts-tailwind-starter
 
+If you're looking for a starter using TypeScript only (without React), check [this repository](https://github.com/dinhanhthi/chrome-extension-ts-starter)!
+
 ## ✨ Tech specs
 
 React, TypeScript, Tailwind, ESLint, Prettier, VSCode settings.
