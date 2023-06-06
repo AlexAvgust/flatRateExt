@@ -36,6 +36,8 @@ You can also go to `http://localhost:5173/` when you work with the playground.
 
 ## Installation
 
+> 💡 You can use `npm` if you want.
+
 ```bash
 # first install
 yarn
