@@ -1,4 +1,4 @@
-# 🦖 react-ts-tailwind-starter
+# 🦖 chrome-extension-react-starter
 
 An all-in-one starter for React developers that supports workspace (eslint, prettier, vscode settings,...) and **also a playground mode** for quick review of changes.
 
