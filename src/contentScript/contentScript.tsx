@@ -4,29 +4,20 @@ import { createRoot } from 'react-dom/client'
 import '../styles/content_script.scss'
 import '../styles/global.scss'
 import '../styles/tailwind.scss'
-import PanelBrowser from './panelBrowser'
+import ColorUpdater from './ColorUpdater'
 
 document.onreadystatechange = function () {
   if (document.readyState === 'complete') {
-    setTimeout(() => {
-      insertPanel()
-    }, 1500)
+    insertColorUpdater()
   }
 }
-
-function insertPanel() {
-  if (isPanelAlreadyAdded()) return
+function insertColorUpdater() {
   const body = document.querySelector('body')
   const panelContainer = document.createElement('div')
-  panelContainer.classList.add('dinhanhthi')
   if (!panelContainer || !body) {
     throw new Error('Could not create the panel container')
   }
   body.appendChild(panelContainer)
   const root = createRoot(panelContainer)
-  root.render(<PanelBrowser />)
-}
-
-function isPanelAlreadyAdded(): boolean {
-  return !!document.querySelector('.dinhanhthi')
+  root.render(<ColorUpdater />)
 }

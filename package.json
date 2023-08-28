@@ -15,7 +15,8 @@
     "build:prod": "rm -rf dist-prod/* && webpack --progress --config webpack.config.js --mode=production",
     "prettier": "prettier --write \"src/**/*.{ts,js,tsx,html}\"",
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src",
-    "playground": "vite"
+    "playground": "vite",
+    "json-server": "json-server --watch example.json"
   },
   "dependencies": {
     "autoprefixer": "^10.4.7",
@@ -45,6 +46,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-tailwindcss": "^3.11.0",
     "html-webpack-plugin": "^5.5.0",
+    "json-server": "^0.17.3",
     "lodash": "^4.17.21",
     "postcss-loader": "^7.0.0",
     "prettier": "^2.8.4",
