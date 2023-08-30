@@ -1,74 +1,75 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import axios, { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from 'react';
+import { TicketGroup, TicketGroupsData } from './interfaces';
 
-type Event = Record<string, string>;
-function updateColors(container: HTMLElement, arrayOfIds: number[]) {
-  const rows = container.querySelectorAll('[data-id]') as NodeListOf<HTMLElement>
+type Event = Record<string, string>
+
+function updateColors(container: HTMLElement, arrayOfIds: number[]): void {
+  // eslint-disable-next-line no-undef
+  const rows: NodeListOf<HTMLElement> = container.querySelectorAll('[data-id]');
 
   rows.forEach((row: HTMLElement) => {
-    const attributeId = Number(row.getAttribute('data-id'))
+    const attributeId = Number(row.getAttribute('data-id'));
     if (arrayOfIds.includes(attributeId)) {
-      row.style.backgroundColor = 'yellow'
+      row.style.backgroundColor = 'yellow';
     }
-  })
+  });
 }
 
 export default function ColorUpdater() {
-  const [onlyExistingTickets, setOnlyExistingTickets] = useState<number[]>([])
-  const [eventObject, setEventObject] = useState<Event>()
+  const [onlyExistingTickets, setOnlyExistingTickets] = useState<number[]>([]);
+  const [eventObject, setEventObject] = useState<Event>();
 
   useEffect(() => {
-    const pathString: string = window.location.pathname
-    const splitPathString: string[] = pathString.split('/').splice(1)
-    const eventObject: Event = {}
+    const pathString: string = window.location.pathname;
+    const splitPathString: string[] = pathString.split('/').splice(1);
+    const eventObject: Event = {};
     for (let i = 0; i < splitPathString.length; i += 2) {
-      const key = splitPathString[i]
-      const value = splitPathString[i + 1]
-      eventObject[key] = value
+      const key: string = splitPathString[i];
+      const value: string = splitPathString[i + 1];
+      eventObject[key] = value;
     }
-    setEventObject(eventObject)
-  }, [])
+    setEventObject(eventObject);
+  }, []);
 
-  useEffect(() => {
+  useEffect((): void => {
     if (eventObject !== undefined) {
       axios
-        .get(`https://app.pokemonion.com/tnet/events/${eventObject.tickets}/ticketgroups`)
-        .then(response => {
-          const filteredTickets = response.data.TicketGroups.filter(
-            (el: { ExchangeTicketGroupID: number }) => el.ExchangeTicketGroupID !== -1
-          ).map((el: { ExchangeTicketGroupID: number }) => el.ExchangeTicketGroupID)
-          setOnlyExistingTickets(filteredTickets)
+        .get<TicketGroupsData>(`https://app.pokemonion.com/tnet/events/${eventObject.tickets}/ticketgroups`)
+        .then((response: AxiosResponse<TicketGroupsData>) => {
+          const filteredTickets: number[] = response.data.TicketGroups.filter((el: TicketGroup): boolean => el.ExchangeTicketGroupID !== -1).map((el: TicketGroup) => el.ExchangeTicketGroupID);
+          setOnlyExistingTickets(filteredTickets);
         })
         .catch(error => {
-          console.error(error)
-          setOnlyExistingTickets([])
-        })
+          console.error(error);
+          setOnlyExistingTickets([]);
+        });
     }
-  }, [eventObject])
+  }, [eventObject]);
 
   useEffect(() => {
-    let observer: MutationObserver
+    let observer: MutationObserver;
 
-    const ticketsTable = document.getElementById('content-area') as HTMLElement
+    const ticketsTable: HTMLElement = document.getElementById('content-area') as HTMLElement;
 
     // eslint-disable-next-line no-undef
-    const mutationCallback: MutationCallback = function (mutationsList, observer) {
+    const mutationCallback: MutationCallback = function(mutationsList: MutationRecord[], observer) {
       for (const mutation of mutationsList) {
-        updateColors(ticketsTable, onlyExistingTickets)
+        updateColors(ticketsTable, onlyExistingTickets);
       }
-    }
-    observer = new MutationObserver(mutationCallback)
+    };
+    observer = new MutationObserver(mutationCallback);
 
-    observer.observe(ticketsTable, { attributes: true, childList: true, subtree: true })
+    observer.observe(ticketsTable, { attributes: true, childList: true, subtree: true });
 
-    updateColors(ticketsTable, onlyExistingTickets)
+    updateColors(ticketsTable, onlyExistingTickets);
 
     return () => {
       if (observer) {
-        observer.disconnect()
+        observer.disconnect();
       }
-    }
-  }, [onlyExistingTickets])
+    };
+  }, [onlyExistingTickets]);
 
-  return <></>
+  return <></>;
 }
