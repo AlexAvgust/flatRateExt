@@ -27,7 +27,7 @@ export default function NameInput(props: NameInputProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex w-[400px] flex-col gap-4 p-4">
       <div className="flex h-fit w-fit gap-3">
         <input
           ref={inputRef}
