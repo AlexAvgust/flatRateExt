@@ -47,15 +47,16 @@ export default function ParentComponent() {
   return (
     <>
       <ColorUpdater onlyExistingTickets={onlyExistingTickets} />
-      {ticketsData ? (
-        <Overall
-          totalTicketGroupCount={ticketsData.length}
-          countWithTGID={onlyExistingTickets.length}
-          countWithoutTGID={ticketsData.length - onlyExistingTickets.length}
-        />
-      ) : (
-        ''
-      )}
+
+      <Overall
+        totalTicketGroupCount={ticketsData?.length}
+        countWithTGID={onlyExistingTickets?.length}
+        countWithoutTGID={
+          ticketsData && onlyExistingTickets
+            ? ticketsData.length - onlyExistingTickets.length
+            : undefined
+        }
+      />
     </>
   )
 }
