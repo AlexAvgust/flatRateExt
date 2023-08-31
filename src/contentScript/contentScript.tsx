@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import '../styles/content_script.scss'
 import '../styles/global.scss'
 import '../styles/tailwind.scss'
-import ColorUpdater from './ColorUpdater'
+import ParentComponent from './ParentComponent'
 
 document.onreadystatechange = function () {
   if (document.readyState === 'complete') {
@@ -19,5 +19,5 @@ function insertColorUpdater() {
   }
   body.appendChild(panelContainer)
   const root = createRoot(panelContainer)
-  root.render(<ColorUpdater />)
+  root.render(<ParentComponent />)
 }

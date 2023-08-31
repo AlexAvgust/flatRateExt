@@ -6,7 +6,7 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   extends: [
-    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:tailwindcss/recommended',
     'plugin:react/recommended',
     'prettier' // make sure it's the last one,
@@ -21,7 +21,7 @@ module.exports = {
       tsx: true
     }
   },
-  plugins: ['react', 'tailwindcss', 'prettier'],
+  plugins: ['react', 'tailwindcss', 'prettier', '@typescript-eslint'],
   settings: {
     react: {
       version: 'detect'
@@ -35,6 +35,7 @@ module.exports = {
     'no-extra-boolean-cast': 1,
     'no-irregular-whitespace': 1,
     'no-unused-vars': 1,
+    '@typescript-eslint/no-explicit-any': 'error',
     'prettier/prettier': ['warn', { singleQuote: true, trailingComma: 'none' }],
     // quotes: ['warn', 'single'],
     quotes: 0,
