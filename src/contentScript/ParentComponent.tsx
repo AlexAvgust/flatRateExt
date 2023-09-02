@@ -11,12 +11,14 @@ import ColorUpdater from './utils/ColorUpdater'
 interface ParentComponentProps {
   eventObject: Event
 }
+
 export default function ParentComponent({ eventObject }: ParentComponentProps) {
   const [ticketsData, setTicketsData] = useState<TicketGroup[]>()
   const [onlyExistingTickets, setOnlyExistingTickets] = useState<number[]>([])
   const [isShowingModal, toggleModal] = useModal()
 
   useEffect(() => {
+    console.log('eventObject', eventObject)
     if (eventObject !== undefined) {
       axios
         .get<TicketGroupsData>(
@@ -35,7 +37,7 @@ export default function ParentComponent({ eventObject }: ParentComponentProps) {
         })
     }
   }, [eventObject])
-  console.log(ticketsData)
+  console.log(isShowingModal)
   return (
     <>
       <ColorUpdater onlyExistingTickets={onlyExistingTickets} />
@@ -51,9 +53,15 @@ export default function ParentComponent({ eventObject }: ParentComponentProps) {
       />
 
       {ticketsData ? (
-        <StatsButton buttonTextContent={'Show Stats'} toggleModal={toggleModal} />
+        <StatsButton
+          buttonTextContent={'Show Stats'}
+          toggleModal={toggleModal}
+          classNames={'absolute bottom-0 right-0 mr-2 mb-2 px-8 py-4'}
+        />
       ) : null}
-      {isShowingModal ? <EventStats /> : null}
+      {ticketsData && isShowingModal ? (
+        <EventStats ticketsData={ticketsData} toggleModal={toggleModal} />
+      ) : null}
     </>
   )
 }

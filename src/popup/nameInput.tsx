@@ -11,18 +11,13 @@ type NameInputProps = {
 export default function NameInput(props: NameInputProps) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [isSaving, setIsSaving] = React.useState(false)
+  const localStorageExcludeProp = localStorage.getItem('excludeProperties')
 
   async function onSaveName() {
-    const name = inputRef.current?.value
-    if (name) {
-      setIsSaving(true)
-      await props.handleSaveName(name)
-
-      // We need this because the browser.storage.sync.set() is too fast
-      setTimeout(() => {
-        setIsSaving(false)
-        inputRef.current!.value = ''
-      }, 1000)
+    const value = inputRef.current?.value
+    console.log(value)
+    if (value) {
+      localStorage.setItem('excludeProperties', value)
     }
   }
 
@@ -30,6 +25,7 @@ export default function NameInput(props: NameInputProps) {
     <div className="flex w-[400px] flex-col gap-4 p-4">
       <div className="flex h-fit w-fit gap-3">
         <input
+          defaultValue={localStorageExcludeProp !== null ? localStorageExcludeProp : ''}
           ref={inputRef}
           className={cn(
             'border-1 text-base w-full appearance-none rounded-md',
@@ -38,7 +34,7 @@ export default function NameInput(props: NameInputProps) {
             'focus:text-gray-800 focus:outline-none w-60'
           )}
           type="text"
-          placeholder="Type your name"
+          placeholder="Type exclude fields from statistics"
         />
         <button
           className={cn(
