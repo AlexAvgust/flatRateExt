@@ -1332,6 +1332,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@kevincobain2000/json-to-html-table@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@kevincobain2000/json-to-html-table/-/json-to-html-table-1.0.4.tgz#35bdd797023f0978ae30958e4c734f66064b0ad8"
+  integrity sha512-lq7x00KXHzotv0P0eCfXlEUKGu/1fS1moO0XAaL8ipI9A9exuhgCazESXJLHCb00r/MYXQ7De4SsNuJeU/+ibw==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"

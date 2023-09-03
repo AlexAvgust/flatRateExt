@@ -19,6 +19,7 @@
     "json-server": "json-server --watch example.json"
   },
   "dependencies": {
+    "@kevincobain2000/json-to-html-table": "^1.0.4",
     "autoprefixer": "^10.4.7",
     "axios": "^1.5.0",
     "postcss": "^8.4.14",
