@@ -12,13 +12,19 @@ export default function NameInput(props: NameInputProps) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [isSaving, setIsSaving] = React.useState(false)
   const localStorageExcludeProp = localStorage.getItem('excludeProperties')
-
-  async function onSaveName() {
+  const sendDataToTabs = () => {
     const value = inputRef.current?.value
-    console.log(value)
-    if (value) {
-      localStorage.setItem('excludeProperties', value)
-    }
+
+    chrome.tabs.query({}, tabs => {
+      tabs.forEach(tab => {
+        if (tab.url && tab.url.includes('ticketnetwork.com')) {
+          if (tab.id != null && value) {
+            chrome.tabs.sendMessage(tab.id, { type: 'SEND_DATA', value })
+            localStorage.setItem('excludeProperties', value)
+          }
+        }
+      })
+    })
   }
 
   return (
@@ -40,7 +46,7 @@ export default function NameInput(props: NameInputProps) {
           className={cn(
             'flex w-24 items-center justify-center rounded-lg bg-sky-600 px-8 text-base text-white hover:bg-sky-700'
           )}
-          onClick={onSaveName}
+          onClick={sendDataToTabs}
         >
           {!isSaving && <div>Save</div>}
           {isSaving && (
