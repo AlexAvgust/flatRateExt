@@ -52,6 +52,8 @@ export interface TicketGroup {
   MSRP: number
   Tags: any[]
   Tickets: Ticket[]
+
+  [key: string]: any
 }
 
 export interface TicketGroupsData {

@@ -1,11 +1,11 @@
-import axios, { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useLocalStorage } from 'usehooks-ts'
 
 import EventStats from './components/EventStats'
 import Overall from './components/Overall'
 import StatsButton from './components/StatsButton'
 import useModal from './hooks/useModal'
-import { Event, TicketGroup, TicketGroupsData } from './interfaces'
+import { TicketGroup } from './interfaces'
 import ColorUpdater from './utils/ColorUpdater'
 
 interface Message {
@@ -13,51 +13,47 @@ interface Message {
   value: string
 }
 
-export default function ParentComponent() {
+interface ParentComponentProps {
+  dataPromise: Promise<TicketGroup[]>
+}
+
+export default function ParentComponent({ dataPromise }: ParentComponentProps) {
   const [ticketsData, setTicketsData] = useState<TicketGroup[]>()
   const [onlyExistingTickets, setOnlyExistingTickets] = useState<number[]>([])
   const [isShowingModal, toggleModal] = useModal()
-
+  const [storage, setStorage] = useLocalStorage<string>(
+    'excludeProperties',
+    localStorage.getItem('excludeProperties') || ''
+  )
   useEffect(() => {
-    const pathString: string = window.location.pathname
-    const splitPathString: string[] = pathString.split('/')
-    const eventObject: Event = {}
-    for (let i = 1; i < splitPathString.length; i++) {
-      const key: string = splitPathString[i]
-      eventObject[key] = splitPathString[i + 1]
-    }
-    console.log('eventObject', eventObject)
-
-    axios
-      .get<TicketGroupsData>(
-        `https://app.pokemonion.com/tnet/events/${eventObject.tickets}/ticketgroups`
-      )
-      .then((response: AxiosResponse<TicketGroupsData>) => {
-        setTicketsData(response.data.TicketGroups)
-        const ticketsWithExchangeTicketsGroupID: number[] = response.data.TicketGroups.filter(
-          (el: TicketGroup): boolean => el.ExchangeTicketGroupID !== -1
-        ).map((el: TicketGroup) => el.ExchangeTicketGroupID)
-        setOnlyExistingTickets(ticketsWithExchangeTicketsGroupID)
-      })
-      .catch((error: Error) => {
-        console.error(error)
-        setOnlyExistingTickets([])
-      })
-
+    dataPromise.then((ticketData: TicketGroup[]) => setTicketsData(ticketData))
+  }, [dataPromise])
+  useEffect(() => {
     const handleMessage = (
       message: Message,
       sender: chrome.runtime.MessageSender,
       sendResponse: () => void
     ) => {
       if (message.type === 'SEND_DATA') {
-        localStorage.setItem('excludeProperties', message.value)
+        // localStorage.setItem('excludeProperties', message.value)
+        setStorage(message.value)
       }
     }
     chrome.runtime.onMessage.addListener(handleMessage)
     return () => {
       chrome.runtime.onMessage.removeListener(handleMessage)
     }
-  }, [])
+  }, [dataPromise])
+  useEffect(() => {
+    if (ticketsData) {
+      const ticketsWithExchangeTicketsGroupID: number[] = ticketsData
+        .filter((el: TicketGroup): boolean => el.ExchangeTicketGroupID !== -1)
+        .map((el: TicketGroup) => el.ExchangeTicketGroupID)
+      setOnlyExistingTickets(ticketsWithExchangeTicketsGroupID)
+    } else {
+      setOnlyExistingTickets([])
+    }
+  }, [ticketsData])
   return (
     <>
       <ColorUpdater onlyExistingTickets={onlyExistingTickets} />
