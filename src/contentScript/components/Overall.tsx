@@ -13,9 +13,8 @@ export default function Overall({
   countWithTGID,
   countWithoutTGID
 }: OverallProps) {
-  const updateOverallContent = () => {
+  useEffect(() => {
     const overallLocationDiv = document.querySelector('.event-info-inner-ctn')
-
     if (overallLocationDiv) {
       const overall = document.createElement('div')
       overall.classList.add('overall')
@@ -23,19 +22,15 @@ export default function Overall({
       overall.style.setProperty('flex-grow', '0')
       overall.style.setProperty('width', '220px')
 
-      if (
-        totalTicketGroupCount !== undefined &&
-        countWithTGID !== undefined &&
-        countWithoutTGID !== undefined
-      ) {
+      if (!totalTicketGroupCount || !countWithTGID || !countWithoutTGID) {
+        overall.innerHTML = spinner
+      } else {
         overall.innerHTML = `
           <div>
             <p>Listings count: ${totalTicketGroupCount}</p>
             <p>With Exchange TGID: ${countWithTGID}</p>
             <p>Without Exchange TGID: ${countWithoutTGID}</p>
           </div>`
-      } else {
-        overall.innerHTML = spinner
       }
       const lastChild: Element | null = overallLocationDiv.lastElementChild
       const existingOverallElements = overallLocationDiv.querySelectorAll('.overall')
@@ -43,10 +38,6 @@ export default function Overall({
 
       overallLocationDiv.insertBefore(overall, lastChild)
     }
-  }
-
-  useEffect(() => {
-    updateOverallContent()
   }, [totalTicketGroupCount, countWithTGID, countWithoutTGID])
 
   return null
