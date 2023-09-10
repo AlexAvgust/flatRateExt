@@ -22,6 +22,7 @@ export default function ColorUpdater({ onlyExistingTickets }: ColorUpdaterProps)
       observer
     ) {
       for (const mutation of mutationsList) {
+        //  runs of any mutation of tickets list
         updateColors(ticketsTable, onlyExistingTickets)
       }
     }
@@ -31,7 +32,7 @@ export default function ColorUpdater({ onlyExistingTickets }: ColorUpdaterProps)
     const ticketsTable: HTMLElement = document.getElementById('content-area') as HTMLElement
 
     observer.observe(ticketsTable, { attributes: true, childList: true, subtree: true })
-
+    // runs on init
     updateColors(ticketsTable, onlyExistingTickets)
 
     return () => {

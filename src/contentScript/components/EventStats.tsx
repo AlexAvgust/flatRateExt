@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import DataGrid from 'react-data-grid'
 import 'react-data-grid/lib/styles.css'
-import { useReadLocalStorage } from 'usehooks-ts'
 
+import useExtensionLocalStorage from '../hooks/useExtensionLocalStorage'
 import { TicketGroup } from '../interfaces'
 import StatsButton from './StatsButton'
 
@@ -44,7 +44,7 @@ const generateRows = (ticketsData: TicketGroup[]) => {
 
 export default function EventStats({ ticketsData, toggleModal }: EventStatsProps) {
   const [exclude, setExclude] = useState<string[]>(['AdditionalNotes', 'Tags'])
-  const LocalStorageExcludeValues = useReadLocalStorage<string>('excludeProperties')
+  const [LocalStorageExcludeValues, setLocalStorageExcludeValues] = useExtensionLocalStorage()
   const [columns, setColumns] = useState<reactDataGridColumn[]>([
     { key: '', width: 80, resizable: true, name: '' }
   ])

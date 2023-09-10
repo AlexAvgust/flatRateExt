@@ -57,6 +57,7 @@ export interface TicketGroup {
 }
 
 export interface TicketGroupsData {
+  Message: string
   TicketGroups: TicketGroup[]
 }
 

@@ -31,7 +31,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/*", "*://*.ticketnetwork.com/*", "*://*.localhost:*/*"],
+      "matches": ["*://*.ticketnetwork.com/*"],
       "js": ["contentScript.js"],
       "run_at": "document_idle"
     }
@@ -39,7 +39,7 @@
 
   "web_accessible_resources": [
     {
-      "matches": ["https://www.google.com/*"],
+      "matches": ["*://*.ticketnetwork.com/*"],
       "resources": ["assets/*"]
     }
   ],
