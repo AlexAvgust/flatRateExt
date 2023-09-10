@@ -22,7 +22,7 @@ export default function Overall({
       overall.style.setProperty('flex-grow', '0')
       overall.style.setProperty('width', '220px')
 
-      if (!totalTicketGroupCount || !countWithTGID || !countWithoutTGID) {
+      if (!totalTicketGroupCount && !countWithTGID && !countWithoutTGID) {
         overall.innerHTML = spinner
       } else {
         overall.innerHTML = `
